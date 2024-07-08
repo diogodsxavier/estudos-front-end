@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@100;200;300;400;500;600;700;800;900&family=Open+Sans:wght@400;800&display=swap');
+
+*{
+    box-sizing: border-box;
+    outline: 0;
+}
+
+:root{
+    --primary-font: 'Geologica', sans-serif;
+
+    --primary-color: rgb(50, 106, 152);
+    --primary-color-darker: #245f73;
+}
+
+body {
+    background-color: var(--primary-color);
+    font-family:var(--primary-font);
+    margin: 0;
+    padding:5px;
+    font-size: 1.1em;
+    line-height:1.5em;
+}
+
+.container {
+    max-width: 640px;
+    background-color: white;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.521);
+}
+
+form label, form input, form button {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+form input{
+    font-size: 24px;
+    height: 40px;
+    padding: 0px 20px;
+}
+
+form input:focus{
+    outline: 1px solid var(--primary-color);
+}
+
+form button {
+    border: none;
+    background-color: var(--primary-color);
+    color: #000;
+    font-weight: 700;
+    font-size: 18px;
+    height: 40px;
+    cursor: pointer;
+    margin-top: 30px;
+}
+
+form button:hover{
+    background-color: var(--primary-color-darker);
+}
+
+.resultado-paragrafo, .bad {
+    background-color: #11f70d;
+    padding: 10px 20px;
+
+}
+
+.bad {
+    background-color: #f24444;
+}

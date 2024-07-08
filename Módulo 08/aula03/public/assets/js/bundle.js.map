@@ -1,0 +1,1 @@
+{"version":3,"file":"bundle.js","mappings":"AAIAA,QAAQC,IADI","sources":["webpack://aula03/./src/index.js"],"sourcesContent":["//1\r\n//1\r\n//3\r\nconst ola = 'Ola mundo';\r\nconsole.log(ola);"],"names":["console","log"],"sourceRoot":""}

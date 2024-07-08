@@ -1,0 +1,30 @@
+@charset'UTF-8';
+
+body {
+    background-color: darkgray;
+}
+
+main {
+    width: 600px;
+    height: 500px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.422);
+    margin: auto;
+}
+
+main p {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-align: justify;
+    width: 300px;
+}
+
+form p:hover {
+    color: darkblue;
+    text-decoration: underline;
+}
+
+form button {
+    background-color: rgb(250, 93, 177);
+}
