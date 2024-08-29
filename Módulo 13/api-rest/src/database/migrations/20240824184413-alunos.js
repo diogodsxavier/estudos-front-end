@@ -23,7 +23,7 @@ module.exports = {
       allowNull: false,
     },
     peso: {
-      type: Sequelize.FLOAT, 
+      type: Sequelize.FLOAT,
       allowNull: false,
     },
     altura: {
