@@ -1,6 +1,7 @@
 import User from '../models/User';
 
 class UserController {
+  // STORE
   async store(req, res) {
     try {
       const novoUser = await User.create(req.body);
@@ -10,9 +11,9 @@ class UserController {
         errors: e.errors.map(err => err.message)
       });
     }
-  }
+  }  
 
-  // Index
+  // INDEX
   async index(req, res) {
     try {
       const users = await User.findAll();
@@ -22,7 +23,7 @@ class UserController {
     }
   }
 
-  // Show
+  // SHOW
   async show(req, res) {
     try {
       const user = await User.findByPk(req.params.id);
@@ -32,7 +33,7 @@ class UserController {
     }
   }
 
-  // Update
+  // UPDATE
   async update(req, res) {
     try {
       if (!req.params.id) {
@@ -59,7 +60,7 @@ class UserController {
     }
   };
 
-  // Delete
+  // DELETE
   async delete(req, res) {
     try {
       if (!req.params.id) {
