@@ -1,4 +1,5 @@
 import User from '../models/User';
+import jwt from 'jsonwebtoken';
 
 class TokenController {
   async store(req, res) {
@@ -22,9 +23,14 @@ class TokenController {
       return res.status(401).json({
         errors: 'Senha inválida'
       });
-    }
+    };
 
-    return res.json(user);
+    const { id } = user;
+    const token = jwt.sign({ id, email }, process.env.TOKEN_SECRET, {
+      expiresIn: process.env.TOKEN_EXPIRATION,
+    });
+
+    return res.json({ token });
   }
 }
 
