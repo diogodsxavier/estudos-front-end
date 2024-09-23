@@ -50,7 +50,7 @@ export default class Aluno extends Model {
           },
         },
       },
-      altura: {
+      altura: { 
         type: Sequelize.FLOAT,
         defaultValue: '',
         validate: {
