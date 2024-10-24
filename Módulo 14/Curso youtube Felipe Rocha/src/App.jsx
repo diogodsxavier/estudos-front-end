@@ -1,10 +1,9 @@
 import AddTask from "./components/AddTask"
 import Task from "./components/Tasks"
-import './App.css';
 import { useState } from "react";
 
 function App() {
-  const [tasks, setTasks] = useState([
+  const [tasks] = useState([
     {
       id: 0,
       title: "Estudar programação",
