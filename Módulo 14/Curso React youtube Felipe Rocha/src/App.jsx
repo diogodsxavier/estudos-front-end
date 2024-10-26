@@ -3,7 +3,7 @@ import Task from "./components/Tasks"
 import { useState } from "react";
 
 function App() {
-  const [tasks] = useState([
+  const [tasks, setTasks] = useState([
     {
       id: 0,
       title: "Estudar programação",
@@ -23,16 +23,31 @@ function App() {
       isCompleted: false,
     }
   ]);
+
+  function onTaskClick(taskId) {
+    const newTask = tasks.map((task) => {
+      if (task.id === taskId) return { ...task, isCompleted: !task.isCompleted }
+      return task;
+    });
+
+    setTasks(newTask);
+  }
+
+  function onDeleteTaskClick(taskId) {
+    const newTask = tasks.filter((task) => task.id !== taskId);
+    setTasks(newTask);
+  }
+
   return (
     <div className="w-screen h-screen bg-slate-500 flex justify-center p-6">
 
-      <div className="w-[500px]">
+      <div className="w-[500px] space-y-4">
         <h1 className="text-3xl text-slate-100 font-bold text-center">
           Hello world!
         </h1>
 
         <AddTask />
-        <Task tasks={tasks} />
+        <Task tasks={tasks} onTaskClick={onTaskClick} onDeleteTaskClick={onDeleteTaskClick}/>
       </div>
     </div>
   )
