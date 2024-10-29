@@ -22,9 +22,8 @@ function AddTask({ onAddTaskSubmit }) {
             onChange={(e) => setDescription(e.target.value)}
             />
 
-            <button onClick={() => {
-                onAddTaskSubmit(title, description);
-            }} className="bg-slate-500 text-white px-4 py-2 rounded-md font-medium">
+            <button className="bg-slate-500 text-white px-4 py-2 rounded-md font-medium" 
+            onClick={() => onAddTaskSubmit(title, description)}>
                 Adicionar
             </button>
         </div>

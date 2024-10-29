@@ -5,25 +5,26 @@ import { useState } from "react";
 function App() {
   const [tasks, setTasks] = useState([
     {
-      id: 0,
+      id: 1,
       title: "Estudar programação",
       description: "Estudar programação para ser Fullstack",
       isCompleted: false,
     },
     {
-      id: 1,
+      id: 2,
       title: "Estudar Inglês",
       description: "Estudar inglês para ser Bilingue",
       isCompleted: false,
     },
     {
-      id: 2,
+      id: 3,
       title: "Ler O poder do hábito",
       description: "Finalizar esse livro em 1 mês",
       isCompleted: false,
-    }
+    },
   ]);
 
+  // Task
   function onTaskClick(taskId) {
     const newTask = tasks.map((task) => {
       if (task.id === taskId) return { ...task, isCompleted: !task.isCompleted }
@@ -33,19 +34,21 @@ function App() {
     setTasks(newTask);
   }
 
+  // Task
   function onDeleteTaskClick(taskId) {
     const newTask = tasks.filter((task) => task.id !== taskId);
     setTasks(newTask);
   }
 
+  // AddTask
   function onAddTaskSubmit(title, description) {
     const newTask = {
       id: tasks.length + 1,
       title,
       description,
-      idCompleted: false
+      isCompleted: false,
     };
-    setTasks({ ...tasks, newTask });
+    setTasks([...tasks, newTask]);
   }
 
   return (
