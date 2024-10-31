@@ -23,7 +23,16 @@ function AddTask({ onAddTaskSubmit }) {
             />
 
             <button className="bg-slate-500 text-white px-4 py-2 rounded-md font-medium" 
-            onClick={() => onAddTaskSubmit(title, description)}>
+            onClick={() => {
+                // Verificar se o título e a descrição estão prenchidos.
+                if(!title.trim() || !description.trim()) {
+                    return alert('Preencha o título e a descrição da tarefa.');
+                }
+
+                onAddTaskSubmit(title, description);
+                setTitle('');
+                setDescription('');
+            }}>
                 Adicionar
             </button>
         </div>
