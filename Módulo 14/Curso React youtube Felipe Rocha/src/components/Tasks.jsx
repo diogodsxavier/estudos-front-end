@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-function Tasks({tasks , onTaskClick, onDeleteTaskClick }) {    
+function Tasks({ tasks, onTaskClick, onDeleteTaskClick }) {
     const navigate = useNavigate();
 
     function onSeeDetailsClick(task) {
@@ -29,7 +29,7 @@ function Tasks({tasks , onTaskClick, onDeleteTaskClick }) {
                     <button onClick={() => onDeleteTaskClick(task.id)} className="bg-slate-400 text-white p-2 rounded-md">
                         -
                     </button>
-                </li>                
+                </li>
             ))}
         </ul>
     )
