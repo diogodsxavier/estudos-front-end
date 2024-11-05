@@ -5,11 +5,22 @@ import { useEffect, useState } from "react";
 
 
 function App() {
-  const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem('tasks')) || []);
+  const [tasks, setTasks] = useState(
+    JSON.parse(localStorage.getItem('tasks')) || []
+  );
 
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
+
+  useEffect(() => {
+    const fatchTask = async () => {
+      const response = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=10', { method: 'GET' });
+      const data = await response.json();
+      setTasks(data);
+    };
+    // fatchTask();
+  }, []);
 
   // Task
   function onTaskClick(taskId) {
