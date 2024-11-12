@@ -19,7 +19,7 @@ function App() {
       const data = await response.json();
       setTasks(data);
     };
-    // fatchTask();
+    fatchTask();
   }, []);
 
   // Task

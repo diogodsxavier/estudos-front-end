@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import Button from "./Button";
 
 function Tasks({ tasks, onTaskClick, onDeleteTaskClick }) {
     const navigate = useNavigate();
@@ -22,13 +23,13 @@ function Tasks({ tasks, onTaskClick, onDeleteTaskClick }) {
 
                     </button>
 
-                    <button onClick={() => onSeeDetailsClick(task)} className="bg-slate-400 text-white p-2 rounded-md">
+                    <Button onClick={() => onSeeDetailsClick(task)}>
                         +
-                    </button>
+                    </Button>
 
-                    <button onClick={() => onDeleteTaskClick(task.id)} className="bg-slate-400 text-white p-2 rounded-md">
+                    <Button onClick={() => onDeleteTaskClick(task.id)}>
                         -
-                    </button>
+                    </Button>
                 </li>
             ))}
         </ul>
