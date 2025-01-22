@@ -20,7 +20,6 @@ function Tasks({ tasks, onTaskClick, onDeleteTaskClick }) {
                         className={`bg-slate-400 w-full text-left text-white p-2 rounded-md ${task.isCompleted && 'line-through'}`}>
 
                         {task.title}
-
                     </button>
 
                     <Button onClick={() => onSeeDetailsClick(task)}>
