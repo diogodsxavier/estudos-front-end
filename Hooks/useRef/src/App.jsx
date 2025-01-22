@@ -1,12 +1,19 @@
-const { useState } = require("react");
+import { useRef } from "react";
+// import { useState } from "react";
 
 const App = () => {
-  const [name, setName] = useState('');
+  // const [name, setName] = useState('');
+
+  const inputRef = useRef(null);
+
+  const focusInput = () => {
+    inputRef.current.focus();
+  }
 
   return (
     <div>
-      <input value={name} onChange={e => setName(e.target.value)} />
-      <p>Hello! My name is {name}</p>
+      <input ref={inputRef} type="text" /> 
+      <button onClick={focusInput}>Focar no Input.</button>
     </div>
   );
 };

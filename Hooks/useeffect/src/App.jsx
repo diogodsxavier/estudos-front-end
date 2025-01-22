@@ -3,32 +3,31 @@ import { useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
-  const [items, setItems] = useState([]);
-  const [resourceType, setResourceType] = useState('posts');
+  const [name, setName] = useState('Diogo');
+  const [item, setItem] = useState([]);
 
   useEffect(() => {
-    const fetchResourceType = async () => {
-      const response = await fetch(`https://jsonplaceholder.typicode.com/${resourceType}`);
+    const fetchApi = async () => {
+      const response = await fetch('https://jsonplaceholder.typicode.com/todos/');
       const responseJson = await response.json();
-      setItems(responseJson);
-    };
+      setItem(responseJson);
+    }
 
-    fetchResourceType();
-  }, [resourceType]);
-
-  // const changeResourceType = (resourceType) => setResourceType(resourceType);
+    fetchApi();
+  }, [name]);
 
   return (
     <div>
-      <h1>{resourceType}</h1>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <button onClick={() => setResourceType('posts')}>Posts</button>
-        <button onClick={() => setResourceType('comments')}>Comments</button>
-        <button onClick={() => setResourceType('todos')}>Todos</button>
+      <h1>{name}</h1>
+      <div>
+        <button onClick={() => setName('Daniel')}>Daniel</button>
+        <button onClick={() => setName('Silva')}>Silva</button>
+        <button onClick={() => setName('Xavier')}>Xavier</button>
       </div>
-      {items.map(item => <p>{item.id}</p>)}
+      {item.map((item) => <p>{item.title}</p>)}
     </div>
   )
+
 }
 
 export default App
