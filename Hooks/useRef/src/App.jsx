@@ -1,21 +1,14 @@
 import { useRef } from "react";
-// import { useState } from "react";
 
-const App = () => {
-  // const [name, setName] = useState('');
-
-  const inputRef = useRef(null);
-
-  const focusInput = () => {
-    inputRef.current.focus();
-  }
-
+function App() {
+  const inputRef = useRef();
+  const focusInput = () => inputRef.current.focus();
   return (
     <div>
-      <input ref={inputRef} type="text" /> 
-      <button onClick={focusInput}>Focar no Input.</button>
+      <input ref={inputRef} type="text"/>
+      <button onClick={focusInput}>Focar no Input</button>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
