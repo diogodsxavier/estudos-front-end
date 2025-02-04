@@ -1,18 +1,14 @@
-import { createContext, useContext } from "react";
+import './App.css'
+import { Outlet } from 'react-router-dom'
+import Navbar from './components/Navbar'
 
 function App() {
-    const ThemeContext = createContext('Light');
-
-    const ChildComponent = () => {
-        const theme = useContext(ThemeContext);
-        return <p>O tema atual é: {theme}</p>
-    }
-
-    return (
-        <ThemeContext.Provider value='Dark'>
-            <ChildComponent />
-        </ThemeContext.Provider>
-    )
+  return (
+    <div>
+      <Navbar />
+      <Outlet />
+    </div>
+  )
 }
 
-export default App;
+export default App
