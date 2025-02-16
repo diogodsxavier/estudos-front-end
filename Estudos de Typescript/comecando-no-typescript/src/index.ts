@@ -6,11 +6,9 @@ let qualqueCoisa: any = 5;
 qualqueCoisa = '1'; 
 
 // Tuples
-
 const peaple: [string, string, number] = ['Diogo', 'Daniel', 20];
 
 // Lista de Tuples
-
 const peaples: [string, number][] = [
     ['Diogo', 20],
     ['José', 44],
@@ -18,3 +16,6 @@ const peaples: [string, number][] = [
     ['Dherik', 16]
 ];
  
+//  intersections
+
+const userId: string | number | boolean = 1;
