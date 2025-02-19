@@ -17,5 +17,21 @@ const peaples: [string, number][] = [
 ];
  
 //  intersections
+const userId: string | number | boolean = 1; // Pode ser qualquer um dos 3 valores
 
-const userId: string | number | boolean = 1;
+// Enum
+enum Direcao {
+    cima = 1,
+    baixo = 2,
+    direita = 'direita',
+    esquerda = 'esquerda'
+}
+
+const direcao = Direcao.direita;
+
+// Type assertions
+const objeto: any = 'Camiseta do Judas Priest';
+const  camiseta = <string>objeto;
+
+console.log(camiseta);
+
