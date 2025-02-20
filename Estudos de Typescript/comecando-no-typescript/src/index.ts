@@ -35,3 +35,5 @@ const  camiseta = <string>objeto;
 
 console.log(camiseta);
 
+const cachorro: string = 'Beethoven';
+
