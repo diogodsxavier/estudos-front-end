@@ -26,13 +26,12 @@ function WeatherApp() {
                setCurrentWeather(currentData);
 
                // Chamada para a previsão (5 Day/3 Hour Forecast)
-               const forecastResponse = await fetch(`api.openweathermap.org/data/2.5/forecast?q=${searchTerm}&appid=${API_KEY}&units=metric&lang=pt`);
+               const forecastResponse = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${searchTerm}&appid=${API_KEY}&units=metric&lang=pt`);
 
                if (!forecastResponse.ok) throw new Error('Erro ao buscar dados da previsão.');
 
                const forecastData = await forecastResponse.json();
                setForecastData(forecastData);
-               console.log(forecastData.list);
           } catch (error) {
                setError(error.message);
           } finally {
@@ -46,22 +45,22 @@ function WeatherApp() {
      }, [fetchWeather]);
 
      return (
-          <div className="p-8 font-sans">
-               <h3 className="text-3xl font-bold font-mono mb-4">Previsão do Tempo</h3>
+          <div className="p-8 font-sans text-center bg-sky-50">
+               <h3 className="text-3xl font-bold mb-4">Previsão do Tempo</h3>
 
                {/* Campo de busca responsivo */}
-               <div className="mb-4 flex flex-col sm:flex-row">
+               <div className="mb-4 flex flex-col sm:flex-row justify-center items-center mx-auto">
                     <input
                          type="text"
                          value={searchTerm}
                          onChange={e => setSearchTerm(e.target.value)}
                          placeholder="Digite o nome da cidade"
-                         className="p-2 border border-gray-300 rounded-t sm:rounded-1 sm:rounded-t-none mb-2 sm:mb-0 flex-1"
+                         className="p-2 border border-gray-300 rounded-t sm:rounded-l sm:rounded-t-none mb-2 sm:mb-0 w-96 focus:outline-none"
                     />
 
                     <button
                          onClick={fetchWeather}
-                         className="bg-blue-800 text-white px-4 py-2 rounded-b sm:rounded-r sm:rounded-b-none hover:bg-blue-900"
+                         className="bg-blue-800 text-white px-4 py-2 rounded-b sm:rounded-r sm:rounded-b-none hover:bg-blue-900 w-96"
                     >
                          Buscar
                     </button>
@@ -75,9 +74,12 @@ function WeatherApp() {
                {currentWeather && (
                     <div className="mt-6">
                          <h2 className="text-2xl font-semibold">{currentWeather.name}</h2>
-                         <p>Temperatura: {currentWeather.main.temp}°C</p>
+                         {/* <p>Temperatura: {currentWeather.main.temp.toFixed(0)}°C</p> */}
+                         <p>máx: {currentWeather.main.temp_max.toFixed(0)}°C    min: {currentWeather.main.temp_min.toFixed(0)}°C</p>
+                         {/* <p>Temp min: {currentWeather.main.temp_min.toFixed(0)}°C</p> */}
                          <p>Condição: {currentWeather.weather[0].description}</p>
                          <img
+                              className="mx-auto"
                               src={`http://openweathermap.org/img/wn/${currentWeather.weather[0].icon}@2x.png`}
                               alt={currentWeather.weather[0].description}
                          />
@@ -94,26 +96,35 @@ function WeatherApp() {
                               {/* Filtra para exibir somente as previsões de meio-dia (12:00:00) */}
                               {Object.values(
                                    forecastData.list.reduce((acc, item) => {
-                                        const date = item.dt_txt.split(' ')[0];// Pega apenas a data (YYYY-MM-DD)
+                                        const [date, time] = item.dt_txt.split(' ');
+                                        const hour = parseInt(time.split(':')[0]);
+                                        // Pega a data de hoje no mesmo formato (YYYY-MM-DD)
+                                        const today = new Date().toISOString().slice(0, 10);
+                                        // Se o item for do dia atual, pula-o
+                                        if (date === today) return acc;
                                         if (
                                              !acc[date] ||
-                                             Math.abs(new Date(item.dt_txt).getHours() - 12) <
-                                             Math.abs(new Date(acc[date].dt_txt).getHours() - 12)
+                                             Math.abs(hour - 12) < Math.abs(parseInt(acc[date].dt_txt.split(' ')[1].split(':')[0]) - 12)
                                         ) {
                                              acc[date] = item; // Mantém a previsão mais próxima de 12h
                                         }
                                         return acc;
                                    }, {})
                               ).map((item) => (
-                                   <div key={item.dt} className="p-4 border border-gray-200 rounded shadow">
-                                        <p>{new Date(item.dt_txt).toLocaleDateString()}</p>
-                                        <img
-                                             src={`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
-                                             alt={item.weather[0].description}
-                                        />
-                                        <p>{item.weather[0].description}</p>
-                                        <p>Temp: {item.main.temp}°C</p>
-                                   </div>
+                                   currentWeather && (
+                                        <div key={item.dt} className="p-4 border border-gray-200 rounded shadow">
+                                             <p>{new Date(item.dt_txt).toLocaleDateString()}</p>
+                                             <p>{item.weather[0].description}</p>
+                                             <img
+                                                  className="mx-auto"
+                                                  src={`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
+                                                  alt={item.weather[0].description}
+                                             />
+                                             <p>Temp máx: {currentWeather.main.temp_max.toFixed(0)}°C</p>
+                                             <p>Temp min: {currentWeather.main.temp_min.toFixed(0)}°C</p>
+                                             {console.log(forecastData)}
+                                        </div>
+                                   )
                               ))}
                          </div>
                     </div>
