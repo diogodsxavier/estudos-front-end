@@ -60,7 +60,7 @@ function WeatherApp() {
 
                     <button
                          onClick={fetchWeather}
-                         className="bg-blue-800 text-white px-4 py-2 rounded-b sm:rounded-r sm:rounded-b-none hover:bg-blue-900 w-96"
+                         className="bg-blue-800 text-white px-4 py-2 rounded-b sm:rounded-r sm:rounded-b-none hover:bg-blue-900"
                     >
                          Buscar
                     </button>
@@ -74,15 +74,14 @@ function WeatherApp() {
                {currentWeather && (
                     <div className="mt-6">
                          <h2 className="text-2xl font-semibold">{currentWeather.name}</h2>
-                         {/* <p>Temperatura: {currentWeather.main.temp.toFixed(0)}°C</p> */}
-                         <p>máx: {currentWeather.main.temp_max.toFixed(0)}°C    min: {currentWeather.main.temp_min.toFixed(0)}°C</p>
-                         {/* <p>Temp min: {currentWeather.main.temp_min.toFixed(0)}°C</p> */}
+                         <p>Temperatura: {currentWeather.main.temp.toFixed(0)}°C</p>
                          <p>Condição: {currentWeather.weather[0].description}</p>
                          <img
                               className="mx-auto"
                               src={`http://openweathermap.org/img/wn/${currentWeather.weather[0].icon}@2x.png`}
                               alt={currentWeather.weather[0].description}
                          />
+                         <p>Máx: {currentWeather.main.temp_max.toFixed(0)}°C &nbsp; Min: {currentWeather.main.temp_min.toFixed(0)}°C</p>
                     </div>
                )}
 
@@ -93,45 +92,69 @@ function WeatherApp() {
                               Previsão para os próximos dias
                          </h3>
                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                              {/* Filtra para exibir somente as previsões de meio-dia (12:00:00) */}
-                              {Object.values(
-                                   forecastData.list.reduce((acc, item) => {
-                                        const [date, time] = item.dt_txt.split(' ');
-                                        const hour = parseInt(time.split(':')[0]);
-                                        // Pega a data de hoje no mesmo formato (YYYY-MM-DD)
-                                        const today = new Date().toISOString().slice(0, 10);
-                                        // Se o item for do dia atual, pula-o
-                                        if (date === today) return acc;
-                                        if (
-                                             !acc[date] ||
-                                             Math.abs(hour - 12) < Math.abs(parseInt(acc[date].dt_txt.split(' ')[1].split(':')[0]) - 12)
-                                        ) {
-                                             acc[date] = item; // Mantém a previsão mais próxima de 12h
-                                        }
+                              {(() => {
+                                   // Data de hoje no formato 'yyyy-mm-dd
+                                   const today = new Date().toISOString().slice(0, 10);
+
+                                   //  Agrupa os itens por data (excluindo o dia atual)
+                                   const groupedData = forecastData.list.reduce((acc, item) => {
+                                        const [date] = item.dt_txt.split(' ');
+                                        if (date === today) return acc; // Ignora o dia atual
+                                        if (!acc[date]) acc[date] = [];
+                                        acc[date].push(item);
                                         return acc;
-                                   }, {})
-                              ).map((item) => (
-                                   currentWeather && (
-                                        <div key={item.dt} className="p-4 border border-gray-200 rounded shadow">
-                                             <p>{new Date(item.dt_txt).toLocaleDateString()}</p>
-                                             <p>{item.weather[0].description}</p>
-                                             <img
-                                                  className="mx-auto"
-                                                  src={`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
-                                                  alt={item.weather[0].description}
-                                             />
-                                             <p>Temp máx: {currentWeather.main.temp_max.toFixed(0)}°C</p>
-                                             <p>Temp min: {currentWeather.main.temp_min.toFixed(0)}°C</p>
-                                             {console.log(forecastData)}
-                                        </div>
-                                   )
-                              ))}
+                                   }, {});
+
+                                   // Para cada data, calcula a temperatura máxima e mínima
+                                   // e seleciona o item representativo (mais próximo das 12h)
+                                   const dailyForecasts = Object.entries(groupedData).map(
+                                        ([date, items]) => {
+                                             const maxTemp = Math.max(...items.map(i => i.main.temp_max));
+                                             const minTemp = Math.max(...items.map(i => i.main.temp_min));
+
+                                             // Seleciona o item cuja hora esteja mais próxima de 12h
+                                             const representative = items.reduce((prev, curr) => {
+                                                  const getHour = (forecast) =>
+                                                       parseInt(forecast.dt_txt.split(' ')[1].split(':')[0], 10);
+                                                  return Math.abs(getHour(curr) - 12) <
+                                                       Math.abs(getHour(prev) - 12)
+                                                       ? curr
+                                                       : prev;
+                                             });
+                                             return { date, maxTemp, minTemp, representative };
+                                        }
+                                   );
+
+                                   // Ordena as datas e pega os próximos 5 dias
+                                   const sortedForecasts = dailyForecasts
+                                        .sort((a, b) => new Date(a.date) - new Date(b.date))
+                                        .slice(0, 5);
+
+                                   return sortedForecasts.map(
+                                        ({ date, maxTemp, minTemp, representative }) => (
+                                             <div
+                                                  key={date}
+                                                  className="p-4 border border-gray-200 rounded shadow"
+                                             >
+                                                  <p>{new Date(date).toLocaleDateString()}</p>
+
+                                                  <img
+                                                       className="mx-auto"
+                                                       src={`http://openweathermap.org/img/wn/${representative.weather[0].icon}@2x.png`}
+                                                       alt={representative.weather[0].description}
+                                                  />
+
+                                                  <p>{representative.weather[0].description}</p>
+                                                  <p>Máx: {Math.round(maxTemp)}°C &nbsp; Min: {Math.round(minTemp)}°C</p>
+                                             </div>
+                                        )
+                                   );
+                              })()}
                          </div>
                     </div>
                )}
           </div>
      );
-
 };
 
 export default WeatherApp
