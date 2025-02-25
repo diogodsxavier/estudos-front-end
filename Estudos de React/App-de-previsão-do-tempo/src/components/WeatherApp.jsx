@@ -20,16 +20,16 @@ function WeatherApp() {
                // Chamada para o Clima atual
                const currentResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchTerm}&appid=${API_KEY}&units=metric&lang=pt`);
 
-               if (!currentResponse.ok) throw new Error('Erro ao buscar dados do clima atual.');
-
+               if (!currentResponse.ok) 
+                    throw new Error('Erro ao buscar dados do clima atual.');
                const currentData = await currentResponse.json();
                setCurrentWeather(currentData);
 
                // Chamada para a previsão (5 Day/3 Hour Forecast)
                const forecastResponse = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${searchTerm}&appid=${API_KEY}&units=metric&lang=pt`);
 
-               if (!forecastResponse.ok) throw new Error('Erro ao buscar dados da previsão.');
-
+               if (!forecastResponse.ok) 
+                    throw new Error('Erro ao buscar dados da previsão.');
                const forecastData = await forecastResponse.json();
                setForecastData(forecastData);
           } catch (error) {
@@ -81,7 +81,7 @@ function WeatherApp() {
                               src={`http://openweathermap.org/img/wn/${currentWeather.weather[0].icon}@2x.png`}
                               alt={currentWeather.weather[0].description}
                          />
-                         <p>Máx: {currentWeather.main.temp_max.toFixed(0)}°C &nbsp; Min: {currentWeather.main.temp_min.toFixed(0)}°C</p>
+                         <p>Máx: {currentWeather.main.temp_max.toFixed(0)}°C &nbsp; Min:{' '} {currentWeather.main.temp_min.toFixed(0)}°C</p>
                     </div>
                )}
 
@@ -93,13 +93,15 @@ function WeatherApp() {
                          </h3>
                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                               {(() => {
-                                   // Data de hoje no formato 'yyyy-mm-dd
-                                   const today = new Date().toISOString().slice(0, 10);
+                                   // Obtém a data atual baseada no clima atual (em formato "YYYY-MM-DD")
+                                   const currentData = new Date(currentWeather.dt * 1000)
+                                        .toISOString()
+                                        .slice(0, 10);
 
                                    //  Agrupa os itens por data (excluindo o dia atual)
                                    const groupedData = forecastData.list.reduce((acc, item) => {
                                         const [date] = item.dt_txt.split(' ');
-                                        if (date === today) return acc; // Ignora o dia atual
+                                        if (date === currentData) return acc; // Ignora o dia atual
                                         if (!acc[date]) acc[date] = [];
                                         acc[date].push(item);
                                         return acc;
@@ -109,8 +111,8 @@ function WeatherApp() {
                                    // e seleciona o item representativo (mais próximo das 12h)
                                    const dailyForecasts = Object.entries(groupedData).map(
                                         ([date, items]) => {
-                                             const maxTemp = Math.max(...items.map(i => i.main.temp_max));
-                                             const minTemp = Math.max(...items.map(i => i.main.temp_min));
+                                             const maxTemp = Math.max(...items.map((i) => i.main.temp_max));
+                                             const minTemp = Math.max(...items.map((i) => i.main.temp_min));
 
                                              // Seleciona o item cuja hora esteja mais próxima de 12h
                                              const representative = items.reduce((prev, curr) => {
