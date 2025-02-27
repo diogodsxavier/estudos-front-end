@@ -18,7 +18,7 @@ function WeatherApp() {
 
           try {
                // Chamada para o Clima atual
-               const currentResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchTerm}&appid=${API_KEY}&units=metric&lang=pt`);
+               const currentResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchTerm}&appid=${API_KEY}&units=metric&lang=pt`);               
 
                if (!currentResponse.ok) 
                     throw new Error('Erro ao buscar dados do clima atual.');
@@ -30,7 +30,7 @@ function WeatherApp() {
 
                if (!forecastResponse.ok) 
                     throw new Error('Erro ao buscar dados da previsão.');
-               const forecastData = await forecastResponse.json();
+               const forecastData = await forecastResponse.json();               
                setForecastData(forecastData);
           } catch (error) {
                setError(error.message);
@@ -45,7 +45,7 @@ function WeatherApp() {
      }, [fetchWeather]);
 
      return (
-          <div className="p-8 font-sans text-center bg-sky-50">
+          <div className="p-8 font-sans text-center bg-sky-200">
                <h3 className="text-3xl font-bold mb-4">Previsão do Tempo</h3>
 
                {/* Campo de busca responsivo */}
@@ -55,12 +55,12 @@ function WeatherApp() {
                          value={searchTerm}
                          onChange={e => setSearchTerm(e.target.value)}
                          placeholder="Digite o nome da cidade"
-                         className="p-2 border border-gray-300 rounded-t sm:rounded-l sm:rounded-t-none mb-2 sm:mb-0 w-96 focus:outline-none"
+                         className="p-2 border border-gray-300 rounded-t sm:rounded-l sm:rounded-t-none mb-2 sm:mb-0 w-full sm:w-96 focus:outline-none"
                     />
 
                     <button
                          onClick={fetchWeather}
-                         className="bg-blue-800 text-white px-4 py-2 rounded-b sm:rounded-r sm:rounded-b-none hover:bg-blue-900"
+                         className="bg-blue-800 text-white px-4 py-2 w-full sm:w-96 rounded-b sm:rounded-r sm:rounded-b-none hover:bg-blue-900"
                     >
                          Buscar
                     </button>
@@ -74,34 +74,32 @@ function WeatherApp() {
                {currentWeather && (
                     <div className="mt-6">
                          <h2 className="text-2xl font-semibold">{currentWeather.name}</h2>
-                         <p>Temperatura: {currentWeather.main.temp.toFixed(0)}°C</p>
-                         <p>Condição: {currentWeather.weather[0].description}</p>
                          <img
                               className="mx-auto"
                               src={`http://openweathermap.org/img/wn/${currentWeather.weather[0].icon}@2x.png`}
                               alt={currentWeather.weather[0].description}
                          />
-                         <p>Máx: {currentWeather.main.temp_max.toFixed(0)}°C &nbsp; Min:{' '} {currentWeather.main.temp_min.toFixed(0)}°C</p>
+                         <h1>{currentWeather.main.temp.toFixed(0)}°C</h1>
+                         <p>{currentWeather.weather[0].description}</p>
+          
                     </div>
-               )}
+               )}               
+               
 
                {/* Exibição da previsão para os próximos dias */}
-               {forecastData?.list?.length > 0 && (
+               {forecastData?.list?.length > 0 && currentWeather && (
                     <div className="mt-6">
-                         <h3 className="text-xl font-semibold mb-2">
-                              Previsão para os próximos dias
-                         </h3>
                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                               {(() => {
-                                   // Obtém a data atual baseada no clima atual (em formato "YYYY-MM-DD")
-                                   const currentData = new Date(currentWeather.dt * 1000)
+                                   // Define a data atual baseada no clima atual (usando currentWeather.dt)
+                                   const currentDate = new Date(currentWeather.dt * 1000)
                                         .toISOString()
                                         .slice(0, 10);
 
                                    //  Agrupa os itens por data (excluindo o dia atual)
                                    const groupedData = forecastData.list.reduce((acc, item) => {
                                         const [date] = item.dt_txt.split(' ');
-                                        if (date === currentData) return acc; // Ignora o dia atual
+                                        if (date === currentDate) return acc; // Ignora o dia atual
                                         if (!acc[date]) acc[date] = [];
                                         acc[date].push(item);
                                         return acc;
@@ -112,7 +110,7 @@ function WeatherApp() {
                                    const dailyForecasts = Object.entries(groupedData).map(
                                         ([date, items]) => {
                                              const maxTemp = Math.max(...items.map((i) => i.main.temp_max));
-                                             const minTemp = Math.max(...items.map((i) => i.main.temp_min));
+                                             const minTemp = Math.min(...items.map((i) => i.main.temp_min));
 
                                              // Seleciona o item cuja hora esteja mais próxima de 12h
                                              const representative = items.reduce((prev, curr) => {
@@ -147,7 +145,11 @@ function WeatherApp() {
                                                   />
 
                                                   <p>{representative.weather[0].description}</p>
-                                                  <p>Máx: {Math.round(maxTemp)}°C &nbsp; Min: {Math.round(minTemp)}°C</p>
+                                                  <p>
+                                                       Máx: {Math.round(maxTemp)}°C 
+                                                       &nbsp; 
+                                                       Min: {Math.round(minTemp)}°C
+                                                  </p>
                                              </div>
                                         )
                                    );
