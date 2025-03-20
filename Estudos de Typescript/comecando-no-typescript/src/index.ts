@@ -31,7 +31,7 @@ const direcao = Direcao.direita;
 
 // Type assertions
 const objeto: any = 'Camiseta do Judas Priest';
-const  camiseta = <string>objeto;
+const camiseta = <string>objeto;
 
 console.log(camiseta);
 
