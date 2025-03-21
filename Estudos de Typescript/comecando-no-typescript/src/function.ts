@@ -1,5 +1,7 @@
-function scorpions(x: number, y: number): Number {
-    return x + y
+interface MathFunc {
+    (x: number, y: number): number
 }
 
-scorpions(2, 5);
+const sum: MathFunc = (x: number, y: number): number => x + y;
+
+sum(1, 2); // 3

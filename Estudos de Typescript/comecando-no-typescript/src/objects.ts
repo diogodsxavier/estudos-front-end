@@ -6,6 +6,7 @@ type User = {
     email?: string
     password: string
     orders: Order[]
+    register(): string
 }
 
 type Order = {
@@ -16,10 +17,13 @@ const user: User = {
     firstname: 'Diogo',
     age: 20,
     password: '123123',
-    orders: [{ userId: true }]
+    orders: [{ userId: true }],
+    register() {
+        return 'Registrado com sucesso!'
+    }
 }
 
-const emailUser = (email?: string) => {};
+const emailUser = (email?: string) => { };
 
 emailUser(user.email)
 
@@ -34,5 +38,25 @@ const author: Author & User = {
     firstname: 'Stephen King',
     age: 75,
     orders: [],
-    password: 'abcabc'
+    password: 'abcabc',
+    register() {
+        return 'Registrado com sucesso!'
+    }
 }
+
+// Interface
+
+interface UserInterface {
+    readonly firstname: string
+    age: number
+}
+
+interface AuthorInterface {
+    books: string[]
+}
+
+const newAuthor: AuthorInterface & UserInterface = {
+    firstname: 'Kubric',
+    age: 70,
+    books: ['2001', 'O iluminado']
+};
