@@ -4,4 +4,6 @@ interface MathFunc {
 
 const sum: MathFunc = (x: number, y: number): number => x + y;
 
+const sub: MathFunc = (x: number, y: number): number => x - y;       
+
 sum(1, 2); // 3

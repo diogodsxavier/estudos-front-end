@@ -1,12 +1,14 @@
 // Type
+// Para fazer Classes tem duas opções, a primeira é a forma tradicional e a segunda é a forma mais moderna
+// que é utilizando o Type e a Interface.                 
 
 type User = {
     firstname: string
     age: number
-    email?: string
+    email?: string  // ? = opcional
     password: string
-    orders: Order[]
-    register(): string
+    orders: Order[] // De outra Classe
+    register(): string // Função
 }
 
 type Order = {
@@ -55,6 +57,7 @@ interface AuthorInterface {
     books: string[]
 }
 
+// Interface + Unions 
 const newAuthor: AuthorInterface & UserInterface = {
     firstname: 'Kubric',
     age: 70,
