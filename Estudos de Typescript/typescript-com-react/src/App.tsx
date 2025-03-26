@@ -1,13 +1,13 @@
 import './App.css'
-import Button from './Button'
+import Button from './components/Button'
 
 function App() {
   return (
-    <>
-      <div>
-        <Button />
-      </div>
-    </>
+    <div>
+      <Button theme='dark' onClick={() => console.log('Clicked')}>
+        Click me
+      </Button>
+    </div>
   )
 }
 

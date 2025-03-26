@@ -42,3 +42,23 @@ class Employee extends Person {
     //     return `My age is ${this.age}`;
     // }
 }
+
+interface IBreakingBad {
+    id: number;
+    sayMyName(): string;
+}
+
+class BreakingBad implements IBreakingBad {
+    constructor(
+        readonly id: number,
+        protected name: string,
+    ) {}
+
+    sayMyName() {
+        return `Say my name! You is ${this.name}`;
+    }
+}
+
+const person = new BreakingBad(1, 'Heisenberg');
+
+console.log(person.sayMyName()); // Say my name! You is Heisenberg
