@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, useMemo, useState } from 'react';
+import { FunctionComponent, ReactNode, useCallback, useMemo, useState } from 'react';
 
 interface ButtonOptions {
     variant: 'primary' | 'secondary';
@@ -8,7 +8,7 @@ interface ButtonProps {
     options?: ButtonOptions;
     theme?: 'dark' | 'light';
     onClick?: () => void;
-    children?: ReactNode;
+    children: ReactNode;
 }
 
 interface Task {
@@ -20,7 +20,8 @@ const Button: FunctionComponent<ButtonProps> = ({ theme, children }) => {
     // UseState
     const [tasks, setTasks] = useState<Task[]>([]);
     const [count, setCount] = useState<number>(0);
-
+    console.log(count, setCount(0));
+    
     setTasks([{ id: 1, completed: false }]);
 
     // UseMemo
@@ -32,9 +33,7 @@ const Button: FunctionComponent<ButtonProps> = ({ theme, children }) => {
     console.log(completedTasks);
 
     // UseCallback
-    const handleClick: () => void = () => {
-        setCount(count + 1);
-    };
+    const handleClick: () => void = useCallback(() => { console.log('Button clicked!') }, []);
     console.log(handleClick);
 
     // UseEffect
