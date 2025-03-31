@@ -1,6 +1,6 @@
 import './App.css'
 import Button from './components/Button'
-import TextField from './components/textField'
+import TextField from './components/TextField'
 
 function App() {
   return (
